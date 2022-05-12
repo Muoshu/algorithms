@@ -1,9 +1,13 @@
 package main
 
 import (
-	"algorithms/queue"
+	"algorithms/binaryTree"
 	"fmt"
 )
+
+func compare(x, y interface{}) bool {
+	return x.(int) < y.(int)
+}
 
 func main() {
 	//var stack = stack.New()
@@ -15,12 +19,21 @@ func main() {
 	//	fmt.Println(stack.Pop())
 	//}
 
-	var que = queue.NewSliceQueue()
+	//var que = queue.NewSliceQueue()
+	//for i := 0; i < 10; i++ {
+	//	que.EnQueue(i)
+	//}
+	//for i := 0; i < 10; i++ {
+	//	item := que.DeQueue()
+	//	fmt.Println(item)
+	//}
+
+	tree := binaryTree.New(compare)
 	for i := 0; i < 10; i++ {
-		que.EnQueue(i)
+		tree.Insert(i)
 	}
-	for i := 0; i < 10; i++ {
-		item := que.DeQueue()
-		fmt.Println(item)
+	findTree := tree.Search(2)
+	if findTree.Node != 2 {
+		fmt.Println("Err")
 	}
 }

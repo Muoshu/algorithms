@@ -3,7 +3,7 @@ package binaryTree
 type comparable func(c1 interface{}, c2 interface{}) bool
 
 type BinaryTree struct {
-	node    interface{}
+	Node    interface{}
 	left    *BinaryTree
 	right   *BinaryTree
 	lessFun comparable
@@ -11,20 +11,20 @@ type BinaryTree struct {
 
 func New(compareFun comparable) *BinaryTree {
 	return &BinaryTree{
-		node:    nil,
+		Node:    nil,
 		lessFun: compareFun,
 	}
 
 }
 
 func (tree *BinaryTree) Search(value interface{}) *BinaryTree {
-	if tree.node == nil {
+	if tree.Node == nil {
 		return nil
 	}
-	if tree.node == value {
+	if tree.Node == value {
 		return tree
 	}
-	if tree.lessFun(value, tree.node) {
+	if tree.lessFun(value, tree.Node) {
 		return tree.left.Search(value)
 	} else {
 		return tree.right.Search(value)
@@ -32,12 +32,13 @@ func (tree *BinaryTree) Search(value interface{}) *BinaryTree {
 }
 
 func (tree *BinaryTree) Insert(value interface{}) {
-	if tree.node == nil {
-		tree.node = value
+	if tree.Node == nil {
+		tree.Node = value
 		tree.left = New(tree.lessFun)
 		tree.right = New(tree.lessFun)
+		return
 	}
-	if tree.lessFun(value, tree.node) {
+	if tree.lessFun(value, tree.Node) {
 		tree.left.Insert(value)
 	} else {
 		tree.right.Insert(value)
@@ -45,15 +46,15 @@ func (tree *BinaryTree) Insert(value interface{}) {
 }
 
 func (tree *BinaryTree) Max() interface{} {
-	if tree.node == nil || tree.right.node == nil {
-		return tree.node
+	if tree.Node == nil || tree.right.Node == nil {
+		return tree.Node
 	}
 	return tree.right.Max()
 }
 
 func (tree *BinaryTree) Min() interface{} {
-	if tree.node == nil || tree.left.node == nil {
-		return tree.node
+	if tree.Node == nil || tree.left.Node == nil {
+		return tree.Node
 	}
 	return tree.left.Min()
 }

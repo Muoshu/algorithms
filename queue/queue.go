@@ -12,7 +12,7 @@ type Queue struct {
 }
 
 func New() *Queue {
-	var queue *Queue = new(Queue)
+	var queue = new(Queue)
 	queue.depth = 0
 	return queue
 }

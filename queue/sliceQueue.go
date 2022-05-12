@@ -10,7 +10,7 @@ type SliceQueue struct {
 }
 
 func NewSliceQueue() *SliceQueue {
-	var sliceQueue *SliceQueue = new(SliceQueue)
+	var sliceQueue = new(SliceQueue)
 	sliceQueue.front = 0
 	sliceQueue.rear = 0
 	return sliceQueue
