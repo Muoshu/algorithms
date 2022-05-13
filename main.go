@@ -1,7 +1,7 @@
 package main
 
 import (
-	"algorithms/binaryTree"
+	"algorithms/sort"
 	"fmt"
 )
 
@@ -28,12 +28,8 @@ func main() {
 	//	fmt.Println(item)
 	//}
 
-	tree := binaryTree.New(compare)
-	for i := 0; i < 10; i++ {
-		tree.Insert(i)
-	}
-	findTree := tree.Search(2)
-	if findTree.Node != 2 {
-		fmt.Println("Err")
-	}
+	var x = []int{1, 4, 3, 2, 9, 8, 6, 5, 7}
+	x = sort.MergeSort(x)
+	fmt.Println(x)
+
 }
