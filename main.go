@@ -10,26 +10,9 @@ func compare(x, y interface{}) bool {
 }
 
 func main() {
-	//var stack = stack.New()
-	//
-	//for i := 0; i < 10; i++ {
-	//	stack.Push(i)
-	//}
-	//for i := 10; i > 0; i-- {
-	//	fmt.Println(stack.Pop())
-	//}
-
-	//var que = queue.NewSliceQueue()
-	//for i := 0; i < 10; i++ {
-	//	que.EnQueue(i)
-	//}
-	//for i := 0; i < 10; i++ {
-	//	item := que.DeQueue()
-	//	fmt.Println(item)
-	//}
-
-	var x = []int{1, 4, 3, 2, 9, 8, 6, 5, 7}
-	x = sort.MergeSort(x)
+	var x = []int{53, 17, 78, 9, 45, 65, 87, 32}
+	fmt.Println("original:", x)
+	sort.HeapSort(x)
 	fmt.Println(x)
 
 }
