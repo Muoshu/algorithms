@@ -37,6 +37,9 @@ func MaxSubsequenceSumEnumerate(x []int) {
 
 func FindMinMax(x []int) (min int, max int) {
 	n := len(x)
+	if n == 0 {
+		panic("Slice nums cannot be 0-size.")
+	}
 	min, max = x[0], x[0]
 	for i := 0; i < n; i++ {
 		if min > x[i] {
@@ -48,7 +51,39 @@ func FindMinMax(x []int) (min int, max int) {
 	}
 	return min, max
 }
-
+func FindMinMax2(x []int) (min int, max int) {
+	n := len(x)
+	var t int
+	if n%2 == 1 {
+		t = n - 1
+	} else {
+		t = n
+	}
+	if n == 0 {
+		panic("Slice nums cannot be 0-size.")
+	}
+	for i := 0; i < t; i += 2 {
+		if x[i] > x[i+1] {
+			x[i], x[i+1] = x[i+1], x[i]
+		}
+	}
+	min, max = x[0], x[0]
+	for i := 0; i < t; i += 2 {
+		if min > x[i] {
+			min = x[i]
+		}
+		if max < x[i+1] {
+			max = x[i+1]
+		}
+	}
+	if min > x[n-1] {
+		min = x[n-1]
+	}
+	if max < x[n-1] {
+		max = x[n-1]
+	}
+	return min, max
+}
 func FindSecond(x []int) int {
 	n := len(x)
 	if n == 0 {

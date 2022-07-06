@@ -12,6 +12,6 @@ func compare(x, y interface{}) bool {
 func main() {
 	var x = []int{1, 1, 0, 1, 1, 1, 3, 2}
 
-	fmt.Println(design.FindMinMax(x))
+	fmt.Println(design.FindMinMax2(x))
 
 }
