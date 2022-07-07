@@ -1,6 +1,10 @@
 package design
 
-import "fmt"
+import (
+	"algorithms/mysort"
+	"fmt"
+	"sort"
+)
 
 func MaxSubsequenceSumDP(x []int) {
 	c, sum, b := 0, 0, 0
@@ -125,4 +129,61 @@ func FindMax(x []int) int {
 		}
 	}
 	return max
+}
+
+func KthMin(x []int, k int) int {
+	n := len(x)
+	mStar := FindMid(x)
+	var s1, s2 []int
+	for i := 0; i < n; i++ {
+		if x[i] < mStar {
+			s1 = append(s1, x[i])
+		}
+		if x[i] > mStar {
+			s2 = append(s2, x[i])
+		}
+	}
+	if k == len(s1)+1 {
+		return mStar
+	}
+	if k <= len(s1) {
+		return KthMin(s1, k)
+	} else {
+		return KthMin(s2, k-len(s1)-1)
+	}
+
+}
+
+// FindMid return mStar
+func FindMid(x []int) int {
+	n := len(x)
+	var median []int
+	if n == 0 {
+		panic("Slice size cannot be 0.")
+	}
+	if n < 5 {
+		sort.Ints(x)
+		return x[n/2]
+	}
+	for i := 0; i+4 < n; i += 5 {
+		sort.Ints(x[i : i+5])
+		median = append(median, x[i : i+5][2])
+	}
+	sort.Ints(median)
+	s := len(median)
+	return median[s/2]
+}
+
+func SelectK(x []int, low, high, k int) int {
+	pivot := mysort.Partition(x, low, high)
+	rank := pivot - low + 1 //枢轴到左边的距离
+	fmt.Println(pivot, rank)
+	fmt.Println(x)
+	if rank == k {
+		return x[pivot]
+	}
+	if rank > k {
+		return SelectK(x, low, pivot-1, k)
+	}
+	return SelectK(x, pivot+1, high, k-rank)
 }
