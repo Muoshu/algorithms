@@ -119,7 +119,7 @@ func Championship(x []int) int {
 
 		j := 0
 		if k%2 == 1 {
-			m = 2/k + 1
+			m = k/2 + 1
 		} else {
 			m = k / 2
 		}

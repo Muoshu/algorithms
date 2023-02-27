@@ -1,7 +1,7 @@
 package queue
 
 type Item struct {
-	item interface{}
+	val  interface{}
 	next *Item
 }
 
@@ -18,12 +18,12 @@ func New() *Queue {
 }
 func (queue *Queue) EnQueue(item interface{}) {
 	if queue.depth == 0 {
-		queue.current = &Item{item: item, next: nil}
+		queue.current = &Item{val: item, next: nil}
 		queue.last = queue.current
 		queue.depth++
 		return
 	}
-	q := &Item{item: item, next: nil}
+	q := &Item{val: item, next: nil}
 	queue.last.next = q
 	queue.last = q
 	queue.depth++
@@ -36,5 +36,5 @@ func (queue *Queue) DeQueue() interface{} {
 	item := queue.current
 	queue.current = queue.current.next
 	queue.depth--
-	return item
+	return item.val
 }
