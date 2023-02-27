@@ -1,6 +1,6 @@
-package sort
+package mysort
 
-// InsertSort implement intType insert sort
+// InsertSort implement intType insert mysort
 func InsertSort(x []int) []int {
 	for i := 1; i < len(x); i++ {
 		temp := x[i]
@@ -83,7 +83,7 @@ func MergeSort(x []int) []int {
 
 func QuickSort(x []int, low, high int) {
 	if low < high {
-		pivot := partition(x, low, high)
+		pivot := Partition(x, low, high)
 		QuickSort(x, low, pivot-1)
 		QuickSort(x, pivot+1, high)
 	}
@@ -110,7 +110,7 @@ func merge(left, right []int) []int {
 	return result
 }
 
-func partition(x []int, low, high int) int {
+func Partition(x []int, low, high int) int {
 	pivot := x[low]
 	for low < high {
 		for pivot <= x[high] && low < high {
