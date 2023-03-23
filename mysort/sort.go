@@ -1,17 +1,14 @@
 package mysort
 
-// InsertSort implement intType insert mysort
-func InsertSort(x []int) []int {
-	for i := 1; i < len(x); i++ {
-		temp := x[i]
-		for j := i - 1; j >= 0; j-- {
-			if temp < x[j] {
-				x[j+1], x[j] = x[j], temp
-			}
-		}
+import "sort"
 
+// InsertSort implement intType insert sort
+func InsertSort(x []int) {
+	for i := 0; i < len(x); i++ {
+		for j := i; j > 0 && x[j-1] > x[j]; j-- {
+			x[j-1], x[j] = x[j], x[j-1]
+		}
 	}
-	return x
 }
 
 func SplitInsertSort(x []int) []int {
@@ -51,34 +48,69 @@ func ShellSort(x []int) []int {
 }
 
 func BubbleSort(x []int) {
-	for i := 0; i < len(x); i++ {
-		for j := 0; j < len(x)-1; j++ {
+	var swapped bool
+	for i := 0; i < len(x)-1; i++ {
+		for j := 0; j < len(x)-i-1; j++ {
 			if x[j] > x[j+1] {
 				x[j], x[j+1] = x[j+1], x[j]
+				swapped = true
 			}
+		}
+		if !swapped {
+			return
 		}
 	}
 }
 
 func SelectSort(x []int) {
-	for i := 0; i < len(x); i++ {
-		temp := x[i]
-		for j := 0; j < len(x); j++ {
-			if temp < x[j] {
-				x[i], x[j] = x[j], x[i]
-				temp = x[j]
+	for i := 0; i < len(x)-1; i++ {
+		min := i
+		for j := i + 1; j < len(x); j++ {
+			if x[min] > x[j] {
+				min = j
 			}
+		}
+		if min != i {
+			x[i], x[min] = x[min], x[i]
 		}
 	}
 }
 
-func MergeSort(x []int) []int {
+func MergeSort(x []int, low, high int) {
+	if low < high {
+		mid := (low + high) / 2
+		MergeSort(x, low, mid)
+		MergeSort(x, mid+1, high)
+		merge(x, low, mid, high)
+	}
 
-	mid := len(x) / 2
-	left := MergeSort(x[:mid])
-	right := MergeSort(x[mid:])
+}
 
-	return merge(left, right)
+func merge(x []int, low, mid, high int) {
+	B := make([]int, len(x))
+	for k := low; k <= high; k++ {
+		B[k] = x[k]
+	}
+	i, j, k := low, mid+1, low
+	for ; i <= mid && j <= high; k++ {
+		if B[i] <= B[j] {
+			x[k] = B[i]
+			i++
+		} else {
+			x[k] = B[j]
+			j++
+		}
+	}
+	for i <= mid { // 第一个表未检测完，复制；两个for只会有一个执行
+		x[k] = B[i]
+		i++
+		k++
+	}
+	for j <= high { // 第二表未检测完，复制
+		x[k] = B[j]
+		k++
+		j++
+	}
 }
 
 func QuickSort(x []int, low, high int) {
@@ -90,39 +122,20 @@ func QuickSort(x []int, low, high int) {
 
 }
 
-func merge(left, right []int) []int {
-	result := make([]int, 0, len(left)+len(right))
-	for len(left) >= 0 || len(right) >= 0 {
-		if len(left) == 0 {
-			return append(result, right...)
-		}
-		if len(right) == 0 {
-			return append(result, left...)
-		}
-		if left[0] <= right[0] {
-			result = append(result, left[0])
-			left = left[1:]
-		} else {
-			result = append(result, right[0])
-			right = right[1:]
-		}
-	}
-	return result
-}
-
 func Partition(x []int, low, high int) int {
 	pivot := x[low]
 	for low < high {
-		for pivot <= x[high] && low < high {
+		for low < high && x[high] >= pivot { //找到右边第一个比pivot小
 			high--
 		}
 		x[low] = x[high]
-		for pivot > x[low] && low < high {
+		for low < high && pivot >= x[low] { //找到左边第一个比pivot大
 			low++
 		}
 		x[high] = x[low]
 	}
 	x[low] = pivot //枢轴最终位置
+
 	return low
 }
 
@@ -137,15 +150,15 @@ func HeapSort(x []int) {
 }
 
 func BuildMaxHeap(x []int) {
+	size := len(x)
 	for i := len(x)/2 - 1; i >= 0; i-- {
-		heapAdjust(x, i, len(x))
+		heapAdjust(x, i, size)
 	}
 }
 
 func heapAdjust(x []int, k, heapSize int) {
-	l := 2*k + 1 //左子树下标
-	r := l + 1   //右子树下标
-
+	l := k<<1 + 1 //左子树下标
+	r := k<<1 + 2 //右子树下标
 	largest := k
 	if l < heapSize && x[l] > x[largest] {
 		largest = l
@@ -153,8 +166,52 @@ func heapAdjust(x []int, k, heapSize int) {
 	if r < heapSize && x[r] > x[largest] {
 		largest = r
 	}
-	if k != largest {
-		x[k], x[largest] = x[largest], x[k]
+	if largest != k {
+		x[largest], x[k] = x[k], x[largest]
 		heapAdjust(x, largest, heapSize)
 	}
+}
+
+func BucketSort(x []int) {
+	n := len(x)
+	if n <= 0 {
+		return
+	}
+	mn, mx := x[0], x[0]
+	for _, val := range x {
+		mn = Min(val, mn)
+		mx = Max(val, mx)
+	}
+	size := (mx-mn)/n + 1   //桶大小
+	cnt := (mx-mn)/size + 1 //桶个数
+	buckets := make([][]int, cnt)
+	for _, val := range x {
+		idx := (val - mn) / size
+		buckets[idx] = append(buckets[idx], val)
+	}
+	//对各桶中的数据排序
+	for i := 0; i < cnt; i++ {
+		sort.Ints(buckets[i])
+	}
+	var index int
+	for i := 0; i < cnt; i++ {
+		for j := 0; j < len(buckets[i]); j++ {
+			x[index] = buckets[i][j]
+			index++
+		}
+	}
+}
+
+func Min(a, b int) int {
+	if a >= b {
+		return b
+	}
+	return a
+}
+
+func Max(a, b int) int {
+	if a >= b {
+		return a
+	}
+	return b
 }

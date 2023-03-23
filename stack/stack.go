@@ -1,17 +1,17 @@
 package stack
 
-type StackItem struct {
+type Item struct {
 	item interface{}
-	next *StackItem
+	next *Item
 }
 
 type Stack struct {
-	sp    *StackItem
-	depth uint64
+	sp    *Item
+	depth int
 }
 
-// New new a stack
-func New() *Stack {
+// NewStack New new a stack
+func NewStack() *Stack {
 	var stack = new(Stack)
 	stack.depth = 0
 	return stack
@@ -30,7 +30,7 @@ func (st *Stack) Pop() interface{} {
 
 // Push an element to the stack
 func (st *Stack) Push(item interface{}) {
-	st.sp = &StackItem{item: item, next: st.sp}
+	st.sp = &Item{item: item, next: st.sp}
 	st.depth++
 }
 
@@ -40,4 +40,8 @@ func (st *Stack) Peek() interface{} {
 		return st.sp.item
 	}
 	return nil
+}
+
+func (st *Stack) IsEmpty() bool {
+	return st.depth == 0
 }

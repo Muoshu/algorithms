@@ -1,5 +1,7 @@
 package Link
 
+import "fmt"
+
 type node struct {
 	Pre  *node
 	data interface{}
@@ -23,7 +25,7 @@ func (dLink *DoubleLink) GetSize() int {
 
 func (dLink *DoubleLink) Append(data interface{}) {
 	if dLink.size == 0 {
-		dLink.head = &node{data: data}
+		dLink.head = &node{data: data, Next: nil, Pre: nil}
 		dLink.size++
 		return
 	}
@@ -36,7 +38,7 @@ func (dLink *DoubleLink) Append(data interface{}) {
 		data: data,
 		Next: nil,
 	}
-	current = temp
+	current.Next = temp
 	dLink.size++
 }
 
@@ -98,4 +100,16 @@ func (dLink *DoubleLink) GetItem(index int) interface{} {
 		current = current.Next
 	}
 	return current.data
+}
+
+func (dLink *DoubleLink) Print() {
+	current := dLink.head
+	if current == nil {
+		panic("single link is nil!")
+	}
+	for current != nil {
+		fmt.Println(current.data, " ")
+		current = current.Next
+	}
+
 }

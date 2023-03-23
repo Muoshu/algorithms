@@ -222,3 +222,6 @@ func SelectK(x []int, low, high, k int) int {
 	}
 	return SelectK(x, pivot+1, high, k-rank)
 }
+func RecurMatrixChain(P []int, i, j int) {
+
+}
